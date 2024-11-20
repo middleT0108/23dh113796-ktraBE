@@ -1,0 +1,120 @@
+﻿@model _23dh113796.Models.ViewModel.ProductDetailsVM
+
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_MasterLayout1.cshtml";
+}
+
+<style>
+    /*detailsproduct*/
+
+    .product-img{
+        vertical-align: top;
+        width: 15%;
+        display: inline-block;
+        margin-left: 50px;
+        
+    }
+    .product-img img{
+        width: 100%
+    }
+
+    /*relatedproduct*/
+    .product-info-and-relatedproduct {
+        display: inline-block;
+        margin-left: 20px;
+        width: 50%;
+        vertical-align: top;
+        background-color: whitesmoke;
+        padding: 20px;
+        
+    }
+    dt{
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .top-product {
+        display: inline-block;
+        margin-left: 50px;
+        width: 20%;
+        text-align: center;
+        vertical-align: top;
+        background-color: whitesmoke;
+    }
+    .form-group{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+
+
+
+<h2>Chi tiết sản phẩm</h2>
+
+<div>
+
+    <hr />
+    <div class="product-img col-md-4">
+        <img src="@Html.DisplayFor(model => model.product.ProductImage)" />
+    </div>
+    <dl class="product-info-and-relatedproduct">
+
+        <div class="col-md-8">
+
+
+            <dt>
+                @Html.DisplayFor(model => model.product.ProductName)
+            </dt>
+            <p class="prodSale">
+                Đã bán:&nbsp; @Html.DisplayFor(modelItems => modelItems.product.OrderDetails.Count)
+            </p>
+
+
+            <dt style="color: red; font-weight: bold;">
+                @Html.DisplayFor(model => model.product.ProductPrice) VND
+
+            </dt>
+            <br />
+            <dt>
+                Danh mục
+            </dt>
+            <p>@Html.DisplayFor(model => model.product.Category.CategoryName).</p>
+            <hr />
+            <p style="font-size: 20px;">
+                <b>Mô tả</b><br />
+
+            </p>
+            <p>@Html.DisplayFor(model => model.product.ProductDescription).</p>
+
+
+        </div>
+        <hr />
+        @Html.Partial("_PVRelatedProduct", Model)
+    </dl>
+
+    <div class="top-product col-md-3 pro-section">
+        <div class="form-group">
+
+            @using (Html.BeginForm("ProductDetails", "Home", FormMethod.Get))
+            {
+                <h4><strong>Số lượng</strong> </h4>
+                <p>
+                    @Html.TextBoxFor(model => model.quantity, new
+               { @class = "form-control", @type = "number", @min = 1 })
+                </p>
+
+                <h4><strong>Tạm tính</strong> </h4>
+                <p>@Model.estimatedValue.ToString("N0")</p>
+                <p style="background-color: red; width: 200px; padding: 7px 18px; border: solid 3px black; border-radius: 7px;">
+                    @Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "Cart",
+                                        new { id = Model.product.ProductID, quantity = Model.quantity },
+                                        new { @class = "btn btn-info" , @style = "color: white; text-decoration: none;"})
+                </p>
+
+            }
+           
+        </div>
+        @Html.Partial("_PVTopProduct", Model)
+    </div>
